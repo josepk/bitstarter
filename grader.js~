@@ -63,25 +63,6 @@ var clone = function(fn) {
 };
 
 
-function doJob (result) {
-	//console.log('entrant doJob');
-		if (result instanceof Error) {
-		//	console.log('entrant error');
-			sys.puts('Error: ' + result.message);
-			this.retry(5000); 
-		} else {
-		//	console.log('url llegida');
-		//	console.log('url llegida');
-			fs.writeFileSync('tmp_index.tmp', result);
-			program.file = 'tmp_index.tmp';
-			var checkJson = checkHtmlFile(program.file, program.checks);
-			var outJson = JSON.stringify(checkJson, null, 4);
-		 	console.log(outJson);
-	   		//sys.puts(result);
-	 	}
-	//console.log('sortint doJob');
-}
-
 if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
@@ -91,7 +72,22 @@ if(require.main == module) {
 	var checkJson =null;
 
     if (program.url !== null){
-    	rest.get(program.url).on('complete', doJob);
+    	rest.get(program.url).on('complete', function(result) {
+      		if (result instanceof Error) {
+        			sys.puts('Error: ' + result.message);
+        			this.retry(5000); if (result instanceof Error) {
+    		    //sys.puts('Error: ' + result.message);
+        			console.log('Error:' + result.message);
+        			this.retry(5000); // try again after 5 sec
+      		} else {
+        			writeFileSync('tmp_index.tmp', result);
+        			program.file = 'tmp_index.tmp';
+        			var checkJson = checkHtmlFile(program.file, program.checks);
+        			var outJson = JSON.stringify(checkJson, null, 4);
+       		 	console.log(outJson);
+     	   		//sys.puts(result);
+     	 	}
+    	}});
 	
     } else { 
     	var checkJson = checkHtmlFile(program.file, program.checks);
@@ -101,4 +97,3 @@ if(require.main == module) {
 } else {
     exports.checkHtmlFile = checkHtmlFile;
 }
-
