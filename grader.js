@@ -24,11 +24,7 @@ References:
 var fs = require('fs');
 var program = require('commander');
 var cheerio = require('cheerio');
-<<<<<<< HEAD
 var rest = require('restler');
-=======
-
->>>>>>> 4e38ffe2b4c59c9d09505d7dbc6cb966719f6575
 var HTMLFILE_DEFAULT = "index.html";
 var CHECKSFILE_DEFAULT = "checks.json";
 
@@ -67,7 +63,6 @@ var clone = function(fn) {
 };
 
 
-<<<<<<< HEAD
 function doJob (result) {
 	//console.log('entrant doJob');
 		if (result instanceof Error) {
@@ -86,15 +81,11 @@ function doJob (result) {
 	 	}
 	//console.log('sortint doJob');
 }
-=======
-
->>>>>>> 4e38ffe2b4c59c9d09505d7dbc6cb966719f6575
 
 if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>', 'Path to index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
-<<<<<<< HEAD
         .option('-u, --url [value]','Path to checks.json')
 	.parse(process.argv);
 	var checkJson =null;
@@ -107,9 +98,6 @@ if(require.main == module) {
     	var outJson = JSON.stringify(checkJson, null, 4);
     	console.log(outJson);
     }
-=======
-
->>>>>>> 4e38ffe2b4c59c9d09505d7dbc6cb966719f6575
 } else {
     exports.checkHtmlFile = checkHtmlFile;
 }
